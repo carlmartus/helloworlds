@@ -1,5 +1,5 @@
 PROGS=triangle
-FLAGS=-Wall -O2 -lSDL -lGL -lGLEW
+FLAGS=-Wall -O2 -g -lSDL -lGL -lGLEW
 
 all: $(PROGS)
 
