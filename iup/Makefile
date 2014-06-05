@@ -1,4 +1,4 @@
-PROGS=hello
+PROGS=hello gl
 FLAGS=-Wall -O2 -g -liup -lX11
 FLAGS+= `pkg-config --libs gtk+-2.0`
 
@@ -11,8 +11,11 @@ all: $(PROGS)
 
 win: $(PROGS:%=%.exe)
 
-%: %.c
+hello: hello.c
 	$(CC) -o $@ $< $(FLAGS)
+
+gl: gl.c
+	$(CC) -o $@ $< $(FLAGS) -lGL -liupgl
 
 %.exe: %.c
 	$(MINGW32) -o $@ $< $(MINGW_IUP_LD) $(MINGW_FLAGS) -I"$(MINGW_IUP_HEADERS)"
