@@ -3,7 +3,14 @@
 #include <iup/iup.h>
 
 static int
-exit_cb(void)
+cb_print(void)
+{
+	printf("Hello World!\n");
+	return 0;
+}
+
+static int
+cb_exit(void)
 {
 	return IUP_CLOSE;
 }
@@ -11,37 +18,41 @@ exit_cb(void)
 int
 main(int argc, char *argv[])
 {
-	// declare widgets
-	Ihandle *btn, *lbl, *vb, *dlg;
-
-	// initialize iup
 	IupOpen(&argc, &argv);
 
-	// create widgets and set their attributes
-	btn=IupButton("&Ok", "");
-	IupSetCallback(btn,"ACTION", (Icallback) exit_cb);
-	IupSetAttribute(btn, "EXPAND", "Yes");
-	IupSetAttribute(btn, "TIP", "Exit button");
+	// Label
+	Ihandle *lbl = IupLabel("Hello, world!");
+	IupSetAttribute(lbl, "EXPAND", "YES");
+	IupSetAttribute(lbl, "ALIGNMENT", "ACENTER");
 
-	lbl=IupLabel("Hello,world!");
+	// Print button
+	Ihandle *btn_print = IupButton("&Print stdout", "");
+	IupSetCallback(btn_print,"ACTION", (Icallback) cb_print);
+	IupSetAttribute(btn_print, "EXPAND", "HORIZONTAL");
 
-	vb=IupVbox(lbl, btn, NULL);
+	// Exit button
+	Ihandle *btn_exit = IupButton("E&xit", "");
+	IupSetCallback(btn_exit,"ACTION", (Icallback) cb_exit);
+	IupSetAttribute(btn_exit, "EXPAND", "HORIZONTAL");
+
+	// Container
+	Ihandle *vb = IupVbox(lbl, btn_print, btn_exit, NULL);
 	IupSetAttribute(vb, "GAP", "10");
 	IupSetAttribute(vb, "MARGIN", "10x10");
-	IupSetAttribute(vb, "ALIGNMENT", "ACENTER");
 
-	dlg=IupDialog(vb);
+	// Window
+	Ihandle *dlg = IupDialog(vb);
 	IupSetAttribute(dlg, "TITLE", "Hello");
-
-	// Map widgets and show dialog
+	IupSetAttribute(dlg, "SIZE", "120x80");
 	IupShow(dlg);
 
-	// Wait for user interaction
+	// Start
 	IupMainLoop();
 
-	// Clean up
+	// Shut down
 	IupDestroy(dlg);
 	IupClose();
+
 	return EXIT_SUCCESS;
 }
 
