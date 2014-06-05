@@ -1,5 +1,6 @@
-#include <iup/iup.h>
+#include <stdio.h>
 #include <stdlib.h>
+#include <iup/iup.h>
 
 static int
 exit_cb(void)
@@ -10,37 +11,37 @@ exit_cb(void)
 int
 main(int argc, char *argv[])
 {
-  // declare widgets
-  Ihandle *btn, *lbl, *vb, *dlg;
+	// declare widgets
+	Ihandle *btn, *lbl, *vb, *dlg;
 
-  // initialize iup
-  IupOpen(&argc, &argv);
-  
-  // create widgets and set their attributes
-  btn=IupButton("&Ok", "");
-  IupSetCallback(btn,"ACTION", (Icallback) exit_cb);
-  IupSetAttribute(btn, "EXPAND", "Yes");
-  IupSetAttribute(btn, "TIP", "Exit button");
-  
-  lbl=IupLabel("Hello,world!");
+	// initialize iup
+	IupOpen(&argc, &argv);
 
-  vb=IupVbox(lbl, btn, NULL);
-  IupSetAttribute(vb, "GAP", "10");
-  IupSetAttribute(vb, "MARGIN", "10x10");
-  IupSetAttribute(vb, "ALIGNMENT", "ACENTER");
+	// create widgets and set their attributes
+	btn=IupButton("&Ok", "");
+	IupSetCallback(btn,"ACTION", (Icallback) exit_cb);
+	IupSetAttribute(btn, "EXPAND", "Yes");
+	IupSetAttribute(btn, "TIP", "Exit button");
 
-  dlg=IupDialog(vb);
-  IupSetAttribute(dlg, "TITLE", "Hello");
+	lbl=IupLabel("Hello,world!");
 
-  // Map widgets and show dialog
-  IupShow(dlg);
+	vb=IupVbox(lbl, btn, NULL);
+	IupSetAttribute(vb, "GAP", "10");
+	IupSetAttribute(vb, "MARGIN", "10x10");
+	IupSetAttribute(vb, "ALIGNMENT", "ACENTER");
 
-  // Wait for user interaction
-  IupMainLoop();
+	dlg=IupDialog(vb);
+	IupSetAttribute(dlg, "TITLE", "Hello");
 
-  // Clean up
-  IupDestroy(dlg);
-  IupClose();
-  return EXIT_SUCCESS;
+	// Map widgets and show dialog
+	IupShow(dlg);
+
+	// Wait for user interaction
+	IupMainLoop();
+
+	// Clean up
+	IupDestroy(dlg);
+	IupClose();
+	return EXIT_SUCCESS;
 }
 
