@@ -7,7 +7,7 @@
 int
 redraw(Ihandle *self, float x, float y)
 {
-	char *size = IupGetAttribute(self, "SIZE");
+	char *size = IupGetAttribute(self, "RASTERSIZE");
 	int w, h;
 	sscanf(size, "%dx%d", &w, &h);
 
