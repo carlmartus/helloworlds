@@ -4,6 +4,8 @@
 int
 main()
 {
+	printf("Seperating using strsep\n");
+
 	char csv[] = "Name;Title;Misc";
 	const char *delimiter = ";"; // Can be const
 

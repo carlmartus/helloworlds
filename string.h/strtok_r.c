@@ -4,6 +4,8 @@
 int
 main()
 {
+	printf("Seperating using strtok_r\n");
+
 	char csv[] = "Name;Title;Misc";
 	char delimiter[] = ";";
 
