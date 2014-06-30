@@ -8,7 +8,7 @@ typedef enum {
 } LogCode;
 
 static void
-log(LogCode code, const char *fmt, ...)
+log_msg(LogCode code, const char *fmt, ...)
 {
 	const char *prefix = NULL;
 	switch (code) {
@@ -31,10 +31,10 @@ log(LogCode code, const char *fmt, ...)
 int
 main(int argc, char **argv)
 {
-	log(LOG_INFO, "Starting program");
-	log(LOG_ERRO, "Only using %d parameters", argc);
-	log(LOG_WARN, "This is your warning!");
-	log(LOG_INFO, "Let's print some arguments: %.2x %d (%s)",
+	log_msg(LOG_INFO, "Starting program");
+	log_msg(LOG_ERRO, "Only using %d parameters", argc);
+	log_msg(LOG_WARN, "This is your warning!");
+	log_msg(LOG_INFO, "Let's print some arguments: %.2x %d (%s)",
 			2, 3, "Hello!");
 	return 0;
 }
