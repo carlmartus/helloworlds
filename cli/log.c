@@ -33,6 +33,9 @@ main(int argc, char **argv)
 {
 	log(LOG_INFO, "Starting program");
 	log(LOG_ERRO, "Only using %d parameters", argc);
+	log(LOG_WARN, "This is your warning!");
+	log(LOG_INFO, "Let's print some arguments: %.2x %d (%s)",
+			2, 3, "Hello!");
 	return 0;
 }
 
