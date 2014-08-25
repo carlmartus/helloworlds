@@ -67,6 +67,7 @@ function makeGeo() {
 		0.0, 0.0,
 		1.0, 0.0,
 		0.0, 1.0,
+
 	];
 	gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(verts), gl.STATIC_DRAW);
 
@@ -86,14 +87,18 @@ function drawScene() {
 
 function webGlStart() {
 	var glcanvas = document.getElementById("glcanvas");
+	console.log("Init canvas...");
 	initGl(glcanvas);
 
+	console.log("Making shaders...");
 	program = makeShader();
+	console.log("Making geometry...");
 	geo = makeGeo();
 
 	gl.clearColor(0.3, 0.4, 0.5, 1.0);
 	gl.clear(gl.COLOR_BUFFER_BIT);
 
+	console.log("Drawing scene...");
 	drawScene();
 }
 
