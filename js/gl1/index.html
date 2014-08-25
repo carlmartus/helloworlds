@@ -1,0 +1,41 @@
+<html>
+
+<head>
+<title>WebGL</title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+<script id="glsl-fs" type="x-shader/x-fragment">
+#version 100
+precision mediump float;
+
+uniform sampler2D tex0;
+
+varying vec2 va_tex;
+
+void main(void) {
+	gl_FragColor = texture2D(tex0, va_tex);
+}
+</script>
+
+<script id="glsl-vs" type="x-shader/x-vertex">
+#version 100
+attribute vec2 in_vert;
+
+varying vec2 va_tex;
+
+void main(void) {
+	va_tex = in_vert;
+	gl_Position = vec4(in_vert, 0.0, 1.0);
+}
+</script>
+
+<script type="text/javascript" src="gl1.min.js"></script>
+</head>
+
+
+<body onload="webGlStart();">
+<canvas id="glcanvas" style="border: none;" width="500" height="500"></canvas>
+</body>
+
+</html>
+
