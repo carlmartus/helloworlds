@@ -8,5 +8,6 @@ A few hello world programs
  * **enet** ENet network client/server
  * **vargs** POSIX vargs
  * **cli** Standard nix terminal
+ * **kivy** Python fancy gui
  * **js/gl?** Javascript WebGL
 
