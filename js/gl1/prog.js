@@ -1,5 +1,4 @@
-
-var gl, shader;
+var gl;
 var shader, geo;
 var image;
 
