@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="utf-8"/>
+<title>WebGL sprite</title>
+<script type="text/javascript" src="game.js"></script>
+
+<script type="x-shader/x-vertex" id="shader-sprite-vs">
+#version 100
+precision mediump float;
+
+attribute vec2 at_uv;
+attribute vec2 at_normal;
+uniform vec3 un_loc;
+
+void main() {
+	gl_Position = vec4(un_loc, 1) + vec4(at_normal, 0, 0);
+}
+</script>
+
+<script type="x-shader/x-fragment" id="shader-sprite-fs">
+#version 100
+precision mediump float;
+
+void main() {
+	gl_FragColor = vec4(1, 0, 0, 1);
+}
+</script>
+
+<style>
+body {
+	margin: 0px;
+	padding: 0px;
+}
+#glCanvas {
+	position: absolute;
+	margin: 0px;
+	padding: 0px;
+}
+</style>
+</head>
+
+<body onload="main()">
+<canvas id="glCanvas"></canvas>
+</body>
+
+</html>
+
