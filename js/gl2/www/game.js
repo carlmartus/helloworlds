@@ -105,9 +105,13 @@ function drawScene() {
 
 	sprite.setCamera(getSimpleCamera(), screenR);
 
-	sprite.render( 0, 0.0, 0.0, 1.0);
-	sprite.render( 1, 5.2, -0.5, 1.0);
-	sprite.render(-4, -0.4, -2.5, 1.0);
+	sprite.render(0, 0, 0, 1);
+	sprite.render(3, 0, 0, 1);
+	sprite.render(6, 0, 0, 1);
+
+	//sprite.render( 0, 0.0, 0.0, 1.0);
+	//sprite.render( 1, 5.2, -0.5, 1.0);
+	//sprite.render(-4, -0.4, -2.5, 1.0);
 }
 
 function resizeEvent() {
@@ -123,14 +127,15 @@ function resizeEvent() {
 
 function getSimpleCamera() {
 	var targetLoc = vec3.create();
-	targetLoc[0] = -5.0;
-	targetLoc[1] = -5.0;
-	targetLoc[2] = 3.0;
+	targetLoc[0] = 5*Math.sin(Date.now()*0.001);
+	targetLoc[1] = 5*Math.cos(Date.now()*0.001);
+	targetLoc[2] = 5;
 
 	var targetFor = vec3.create();
-	targetFor[0] = 1.0 + Math.sin(Date.now()*0.001);
-	targetFor[1] = 1.0;
-	targetFor[2] = -0.7;
+	//targetFor[0] = 1.0 + Math.sin(Date.now()*0.001);
+	targetFor[0] = -targetLoc[0];
+	targetFor[1] = -targetLoc[1];
+	targetFor[2] = -targetLoc[2];
 
 	var targetUpv = vec3.create();
 	targetUpv[0] = 0.0;
@@ -153,6 +158,8 @@ function getSimpleCamera() {
 function main() {
 	canvas = document.getElementById('glCanvas');
 	gl = canvas.getContext('experimental-webgl');
+
+	gl.enable(gl.DEPTH_TEST);
 
 	sprite = new Sprite(function() {
 		window.requestAnimationFrame(drawScene);
