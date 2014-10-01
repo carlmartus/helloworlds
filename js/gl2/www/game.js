@@ -40,8 +40,9 @@ function Sprite(done) {
 	gl.useProgram(this.shader);
 	this.unLoc = gl.getUniformLocation(this.shader, 'un_loc');
 	this.unRad = gl.getUniformLocation(this.shader, 'un_rad');
-	var unTex = gl.getUniformLocation(this.shader, 'un_tex');
-	gl.uniform1i(unTex, 0);
+	this.unCam = gl.getUniformLocation(this.shader, 'un_cam');
+	this.unRat = gl.getUniformLocation(this.shader, 'un_rat');
+	gl.uniform1i(gl.getUniformLocation(this.shader, 'un_tex'), 0);
 
 	// Vertices
 	var vertData = [
@@ -66,10 +67,15 @@ function Sprite(done) {
 		gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, img);
 		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
 		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
-
 		done();
 	}
 	img.src = 'sprites.png';
+}
+
+Sprite.prototype.setCamera = function(mat, ratio) {
+	gl.useProgram(this.shader);
+	gl.uniform1f(this.unRat, ratio);
+	gl.uniformMatrix4fv(this.unCam, false, mat);
 }
 
 Sprite.prototype.render = function(x, y, z, r) {
@@ -92,10 +98,16 @@ Sprite.prototype.render = function(x, y, z, r) {
 // }}}
 // Main {{{
 function drawScene() {
+	window.requestAnimationFrame(drawScene);
+
 	gl.clearColor(0.7, 0.7, 0.7, 1.0);
 	gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-	sprite.render(0.3, 0.2, 0, 0.4);
+	sprite.setCamera(getSimpleCamera(), screenR);
+
+	sprite.render( 0, 0.0, 0.0, 1.0);
+	sprite.render( 1, 5.2, -0.5, 1.0);
+	sprite.render(-4, -0.4, -2.5, 1.0);
 }
 
 function resizeEvent() {
@@ -109,16 +121,44 @@ function resizeEvent() {
 	gl.viewport(0, 0, canvas.width, canvas.height);
 }
 
+function getSimpleCamera() {
+	var targetLoc = vec3.create();
+	targetLoc[0] = -5.0;
+	targetLoc[1] = -5.0;
+	targetLoc[2] = 3.0;
+
+	var targetFor = vec3.create();
+	targetFor[0] = 1.0 + Math.sin(Date.now()*0.001);
+	targetFor[1] = 1.0;
+	targetFor[2] = -0.7;
+
+	var targetUpv = vec3.create();
+	targetUpv[0] = 0.0;
+	targetUpv[1] = 0.0;
+	targetUpv[2] = 1.0;
+
+	var matPerspective = mat4.create();
+	mat4.perspective(matPerspective, 90, screenR, 0.1, 100.0);
+
+	var matLookAt = mat4.create();
+	var center = vec3.create();
+	vec3.add(center, targetLoc, targetFor);
+	mat4.lookAt(matLookAt, targetLoc, center, targetUpv);
+
+	var cam = mat4.create();
+	mat4.mul(cam, matPerspective, matLookAt);
+	return cam;
+}
+
 function main() {
 	canvas = document.getElementById('glCanvas');
 	gl = canvas.getContext('experimental-webgl');
 
 	sprite = new Sprite(function() {
-		drawScene();
+		window.requestAnimationFrame(drawScene);
 	});
-
-	//window.addEventListener('resize', resizeEvent, false);
-	//resizeEvent();
+	window.addEventListener('resize', resizeEvent, false);
+	resizeEvent();
 }
 // }}}
 

@@ -13,13 +13,19 @@ precision mediump float;
 
 attribute vec2 at_uv;
 attribute vec2 at_normal;
+
 uniform vec3 un_loc;
+uniform mat4 un_cam;
 uniform float un_rad;
+uniform float un_rat;
+
 varying vec2 va_uv;
 
 void main() {
 	va_uv = at_uv;
-	gl_Position = vec4(un_loc, 1) + vec4(at_normal, 0, 0)*un_rad;
+	vec2 normal = vec2(at_normal.x, at_normal.y*un_rat);
+	gl_Position = un_cam*vec4(un_loc, 1) + vec4(normal, 0, 0)*un_rad;
+	//gl_Position = vec4(un_loc, 1) + vec4(at_normal, 0, 0)*un_rad;
 }
 </script>
 
@@ -28,12 +34,11 @@ void main() {
 precision mediump float;
 
 uniform sampler2D un_tex;
+
 varying vec2 va_uv;
 
 void main() {
-	//gl_FragColor = vec4(1, 0, 0, 1);
 	gl_FragColor = texture2D(un_tex, va_uv);
-	//gl_FragColor = vec4(va_uv, 0, 1);
 }
 </script>
 
