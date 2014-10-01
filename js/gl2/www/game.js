@@ -36,9 +36,12 @@ function loadProgram(idVs, idFs) {
 // Sprite {{{
 function Sprite(done) {
 	// Shader
-	this.sha = loadProgram('shader-sprite-vs', 'shader-sprite-fs');
-	this.unLoc = gl.getUniformLocation(this.sha, 'un_loc');
-	gl.useProgram(this.sha);
+	this.shader = loadProgram('shader-sprite-vs', 'shader-sprite-fs');
+	gl.useProgram(this.shader);
+	this.unLoc = gl.getUniformLocation(this.shader, 'un_loc');
+	this.unRad = gl.getUniformLocation(this.shader, 'un_rad');
+	var unTex = gl.getUniformLocation(this.shader, 'un_tex');
+	gl.uniform1i(unTex, 0);
 
 	// Vertices
 	var vertData = [
@@ -56,9 +59,10 @@ function Sprite(done) {
 	img.onerror = function() {
 		throw 'Cannot load image';
 	}
+	var thisObj = this;
 	img.onload = function() {
-		this.tex = gl.createTexture();
-		gl.bindTexture(gl.TEXTURE_2D, this.tex);
+		thisObj.texture = gl.createTexture();
+		gl.bindTexture(gl.TEXTURE_2D, thisObj.texture);
 		gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, img);
 		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
 		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
@@ -69,12 +73,29 @@ function Sprite(done) {
 }
 
 Sprite.prototype.render = function(x, y, z, r) {
+	gl.useProgram(this.shader);
+	gl.bindTexture(gl.TEXTURE_2D, this.texture);
+
+	gl.uniform3f(this.unLoc, x, y, z);
+	gl.uniform1f(this.unRad, r);
+
+	gl.enableVertexAttribArray(0);
+	gl.enableVertexAttribArray(1);
+	gl.vertexAttribPointer(0, 2, gl.FLOAT, true, 16, 0);
+	gl.vertexAttribPointer(1, 2, gl.FLOAT, true, 16, 8);
+
+	gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+
+	gl.disableVertexAttribArray(0);
+	gl.disableVertexAttribArray(1);
 }
 // }}}
 // Main {{{
 function drawScene() {
 	gl.clearColor(0.7, 0.7, 0.7, 1.0);
 	gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+
+	sprite.render(0.3, 0.2, 0, 0.4);
 }
 
 function resizeEvent() {

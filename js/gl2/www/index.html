@@ -5,6 +5,7 @@
 <meta charset="utf-8"/>
 <title>WebGL sprite</title>
 <script type="text/javascript" src="game.js"></script>
+<script type="text/javascript" src="gl-matrix-min.js"></script>
 
 <script type="x-shader/x-vertex" id="shader-sprite-vs">
 #version 100
@@ -13,9 +14,12 @@ precision mediump float;
 attribute vec2 at_uv;
 attribute vec2 at_normal;
 uniform vec3 un_loc;
+uniform float un_rad;
+varying vec2 va_uv;
 
 void main() {
-	gl_Position = vec4(un_loc, 1) + vec4(at_normal, 0, 0);
+	va_uv = at_uv;
+	gl_Position = vec4(un_loc, 1) + vec4(at_normal, 0, 0)*un_rad;
 }
 </script>
 
@@ -23,8 +27,13 @@ void main() {
 #version 100
 precision mediump float;
 
+uniform sampler2D un_tex;
+varying vec2 va_uv;
+
 void main() {
-	gl_FragColor = vec4(1, 0, 0, 1);
+	//gl_FragColor = vec4(1, 0, 0, 1);
+	gl_FragColor = texture2D(un_tex, va_uv);
+	//gl_FragColor = vec4(va_uv, 0, 1);
 }
 </script>
 
