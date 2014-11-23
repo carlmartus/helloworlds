@@ -3,7 +3,7 @@ FLAGS=-Wall -O2 -g -lSDL -lGL -lGLEW
 
 all: $(PROGS)
 
-%: %.c
+triangle: triangle.c glstuff.c
 	$(CC) -o $@ $< $(FLAGS)
 
 clean:
