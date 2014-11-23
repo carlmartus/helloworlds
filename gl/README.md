@@ -7,3 +7,8 @@ triangle.c
 ----------
 Drawing a simple red triangle
 
+
+point.c
+----------
+Drawing some points
+

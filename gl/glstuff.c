@@ -3,13 +3,14 @@
 #include <stdlib.h>
 #include <alloca.h>
 #include <sys/stat.h>
+#include <assert.h>
 
 static GLuint load_shader(const char *desc,
 		const char *file_name, GLenum type);
 
 GLuint load_shaders(const char *vert, const char *frag) {
-	GLuint vert_id = load_shader("vert", "triangle_vert.glsl", GL_VERTEX_SHADER);
-	GLuint frag_id = load_shader("frag", "triangle_frag.glsl", GL_FRAGMENT_SHADER);
+	GLuint vert_id = load_shader("vert", vert, GL_VERTEX_SHADER);
+	GLuint frag_id = load_shader("frag", frag, GL_FRAGMENT_SHADER);
 
 	GLuint program = glCreateProgram();
 	glAttachShader(program, vert_id);
@@ -29,6 +30,10 @@ GLuint load_shaders(const char *vert, const char *frag) {
 	glDeleteShader(frag_id);
 
 	return program;
+}
+
+void gl_errors(void) {
+	assert(glGetError() == GL_NO_ERROR);
 }
 
 static GLuint load_shader(

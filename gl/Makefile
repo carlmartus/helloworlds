@@ -1,7 +1,10 @@
-PROGS=triangle
+PROGS=triangle point
 FLAGS=-std=gnu11 -Wall -O2 -g -lSDL -lGL -lGLEW
 
 all: $(PROGS)
+
+point: point.c glstuff.c
+	$(CC) -o $@ $^ $(FLAGS)
 
 triangle: triangle.c glstuff.c
 	$(CC) -o $@ $^ $(FLAGS)

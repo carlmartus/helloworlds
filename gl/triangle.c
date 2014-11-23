@@ -14,10 +14,6 @@ main()
 	glClearColor(0.3, 0.4, 0.5, 1.0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	GLuint va;
-	glGenVertexArrays(1, &va);
-	glBindVertexArray(va);
-
 	static const float vertices[] = {
 		0.0f, 0.0f,
 		1.0f, 0.0f,
