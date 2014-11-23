@@ -1,4 +1,8 @@
 #include "glstuff.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <alloca.h>
+#include <sys/stat.h>
 
 static GLuint load_shader(const char *desc,
 		const char *file_name, GLenum type);

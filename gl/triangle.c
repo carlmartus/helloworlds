@@ -1,67 +1,7 @@
 #include <stdio.h>
-#include <alloca.h>
 #include <GL/glew.h>
 #include <SDL/SDL.h>
-#include <unistd.h>
-#include <sys/stat.h>
-
-GLuint load_shader(
-		const char *desc, const char *file_name, GLenum type) {
-	GLuint sh = glCreateShader(type);
-
-	// Loading source
-	struct stat st;
-	if (stat(file_name, &st) != 0) {
-		printf("File doesn't exist: %s\n", file_name);
-		exit(1);
-	}
-	char *buf = alloca(st.st_size + 1);
-	FILE *fd = fopen(file_name, "r");
-	fread(buf, st.st_size, 1, fd);
-	fclose(fd);
-	buf[st.st_size] = '\0';
-
-	// Compiling source
-	glShaderSource(sh, 1, (const char**) &buf , NULL);
-	glCompileShader(sh);
-
-	// Checking errors
-	GLint result = GL_FALSE;
-	int log_len;
-	glGetShaderiv(sh, GL_COMPILE_STATUS, &result);
-	glGetShaderiv(sh, GL_INFO_LOG_LENGTH, &log_len);
-
-	char *log = alloca(log_len + 1);
-	glGetShaderInfoLog(sh, log_len, NULL, log);
-
-	printf("%s:\n%s\n", desc, log);
-
-	return sh;
-}
-
-GLuint load_shaders(const char *vert, const char *frag) {
-	GLuint vert_id = load_shader("vert", "triangle_vert.glsl", GL_VERTEX_SHADER);
-	GLuint frag_id = load_shader("frag", "triangle_frag.glsl", GL_FRAGMENT_SHADER);
-
-	GLuint program = glCreateProgram();
-	glAttachShader(program, vert_id);
-	glAttachShader(program, frag_id);
-	glLinkProgram(program);
-
-	GLint result = GL_FALSE;
-	int log_len;
-
-	glGetProgramiv(program, GL_LINK_STATUS, &result);
-	glGetProgramiv(program, GL_INFO_LOG_LENGTH, &log_len);
-	char *prog_err = alloca(log_len + 1);
-	glGetProgramInfoLog(program, log_len, NULL, prog_err);
-	printf("Linking:\n%s\n", prog_err);
-
-	glDeleteShader(vert_id);
-	glDeleteShader(frag_id);
-
-	return program;
-}
+#include "glstuff.h"
 
 int
 main()
