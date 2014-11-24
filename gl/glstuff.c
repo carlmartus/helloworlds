@@ -4,6 +4,7 @@
 #include <alloca.h>
 #include <sys/stat.h>
 #include <assert.h>
+#include <SDL/SDL.h>
 
 static GLuint load_shader(const char *desc,
 		const char *file_name, GLenum type);
@@ -34,6 +35,20 @@ GLuint load_shaders(const char *vert, const char *frag) {
 
 void gl_errors(void) {
 	assert(glGetError() == GL_NO_ERROR);
+}
+
+void wait_quit(void) {
+	while (1) {
+		SDL_Event event;
+		SDL_WaitEvent(&event);
+
+		switch (event.type) {
+			case SDL_KEYDOWN :
+			case SDL_QUIT :
+				return;
+			default : break;
+		}
+	}
 }
 
 static GLuint load_shader(

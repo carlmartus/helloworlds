@@ -21,7 +21,7 @@ int main() {
 	glUseProgram(prog);
 
 	static const Vertice data[] = {
-		{ 0.0f, 0.0f, 50.0f },
+		{ 0.0f, 0.0f, 150.0f },
 		{ 0.1f, 0.2f, 20.0f },
 		{-0.3f,-0.8f, 8.0f },
 	};
@@ -44,7 +44,7 @@ int main() {
 	gl_errors();
 
 	SDL_GL_SwapBuffers();
-	SDL_Delay(800);
+	wait_quit();
 
 	SDL_Quit();
 

@@ -39,7 +39,7 @@ main()
 	glDisableVertexAttribArray(0);
 
 	SDL_GL_SwapBuffers();
-	SDL_Delay(800);
+	wait_quit();
 
 	SDL_Quit();
 	return 0;
