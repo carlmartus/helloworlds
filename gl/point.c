@@ -13,6 +13,7 @@ int main() {
 
 	glewInit();
 	glEnable(GL_PROGRAM_POINT_SIZE);
+	glEnable(GL_POINT_SPRITE);
 	gl_errors();
 
 	GLuint prog = load_shaders(
