@@ -9,7 +9,7 @@ function frame() {
 	gl.enableVertexAttribArray(0);
 	gl.vertexAttribPointer(0, 3, gl.FLOAT, false, 0, 0);
 
-	gl.drawArrays(gl.POINTS, 0, 2);
+	gl.drawArrays(gl.POINTS, 0, 3);
 	gl.disableVertexAttribArray(0);
 }
 
@@ -31,6 +31,7 @@ function init() {
 	var data = new Float32Array([
 		0.0, 0.0, 20.0,
 		0.3, 0.4, 50.0,
+		-0.3, -0.4, 31.0,
 	]);
 
 	// Vbo
