@@ -125,4 +125,3 @@ function webGlStart() {
 	gl.clear(gl.COLOR_BUFFER_BIT);
 }
 
-

@@ -5,6 +5,12 @@ function frame() {
 	window.requestAnimationFrame(frame);
 
 	gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+
+	gl.enableVertexAttribArray(0);
+	gl.vertexAttribPointer(0, 3, gl.FLOAT, false, 0, 0);
+
+	gl.drawArrays(gl.POINTS, 0, 2);
+	gl.disableVertexAttribArray(0);
 }
 
 function init() {
@@ -27,10 +33,12 @@ function init() {
 		0.3, 0.4, 50.0,
 	]);
 
+	// Vbo
 	var vbo = gl.createBuffer();
 	gl.bindBuffer(gl.ARRAY_BUFFER, vbo);
 	gl.bufferData(gl.ARRAY_BUFFER, data, gl.STATIC_DRAW);
 
+	// Shader
 	var shaderFs = gl.createShader(gl.FRAGMENT_SHADER);
 	var shaderVs = gl.createShader(gl.VERTEX_SHADER);
 
