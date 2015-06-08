@@ -1,3 +1,8 @@
+/**
+ * Hello world
+ * Curses press key sample
+ */
+
 #include <stdio.h>
 #include <ncurses.h>
 
