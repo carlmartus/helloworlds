@@ -23,11 +23,30 @@ int main() {
 	glClearColor(0.3, 0.4, 0.5, 1.0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	extern void glstuff_main();
-	glstuff_main();
+	int hold = 1;
 
+	extern int glstuff_main(float time);
+	uint32_t startTime = SDL_GetTicks();
+	float time = 0.0f;
+	while (hold && glstuff_main(time) != 0) {
+		SDL_GL_SwapBuffers();
+		SDL_Delay(14);
+
+		SDL_Event event;
+		while (SDL_PollEvent(&event)) {
+			if (event.type == SDL_QUIT || event.type == SDL_KEYDOWN) {
+				hold = 0;
+			}
+		}
+
+		uint32_t nowTime = SDL_GetTicks();
+		time = 0.001f * (nowTime - startTime);
+	}
 	SDL_GL_SwapBuffers();
-	wait_quit();
+
+	if (hold) {
+		wait_quit();
+	}
 
 	SDL_Quit();
 	return 0;

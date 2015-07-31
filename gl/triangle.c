@@ -3,7 +3,7 @@
 #include <SDL/SDL.h>
 #include "glstuff.h"
 
-void glstuff_main() {
+int glstuff_main(float time) {
 	static const float vertices[] = {
 		0.0f, 0.0f,
 		1.0f, 0.0f,
@@ -27,5 +27,7 @@ void glstuff_main() {
 
 	glDrawArrays(GL_TRIANGLES, 0, 3);
 	//glDisableVertexAttribArray(0);
+
+	return 0;
 }
 

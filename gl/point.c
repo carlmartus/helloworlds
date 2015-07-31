@@ -7,7 +7,7 @@ typedef struct {
 	float size;
 } Vertice;
 
-void glstuff_main() {
+int glstuff_main(float time) {
 	GLuint prog = load_shaders_files(
 			"point_vert.glsl",
 			"point_frag.glsl", NULL);
@@ -32,5 +32,7 @@ void glstuff_main() {
 
 	glDrawArrays(GL_POINTS, 0, sizeof(data)/sizeof(data[0]));
 	gl_errors();
+
+	return 0;
 }
 

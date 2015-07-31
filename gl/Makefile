@@ -1,5 +1,5 @@
 PROGS=triangle point glsl_const
-FLAGS=-std=gnu11 -Wall -O2 -g -lSDL -lGL -lGLEW
+FLAGS=-std=gnu11 -Wall -O2 -g -lSDL -lGL -lGLEW -lm
 
 all: $(PROGS)
 
