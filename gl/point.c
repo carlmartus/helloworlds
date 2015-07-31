@@ -16,7 +16,7 @@ int main() {
 	glEnable(GL_POINT_SPRITE);
 	gl_errors();
 
-	GLuint prog = load_shaders(
+	GLuint prog = load_shaders_files(
 			"point_vert.glsl",
 			"point_frag.glsl");
 	glUseProgram(prog);

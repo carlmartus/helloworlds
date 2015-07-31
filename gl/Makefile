@@ -9,7 +9,7 @@ point: point.c glstuff.c
 triangle: triangle.c glstuff.c
 	$(CC) -o $@ $^ $(FLAGS)
 
-glsl_const: glsl_const.c
+glsl_const: glsl_const.c glstuff.c
 	$(CC) -o $@ $^ $(FLAGS)
 
 clean:

@@ -6,26 +6,28 @@
 #include <assert.h>
 #include <SDL/SDL.h>
 
+static GLuint compile_shader(const char *text, const char *desc, GLenum type);
+static GLuint link_program(GLuint vert, GLuint frag);
 static GLuint load_shader(const char *desc,
 		const char *file_name, GLenum type);
 
-GLuint load_shaders(const char *vert, const char *frag) {
-	GLuint vert_id = load_shader("vert", vert, GL_VERTEX_SHADER);
-	GLuint frag_id = load_shader("frag", frag, GL_FRAGMENT_SHADER);
+GLuint load_shaders_files(const char *vertFile, const char *fragFile) {
+	GLuint vert_id = load_shader("vert file", vertFile, GL_VERTEX_SHADER);
+	GLuint frag_id = load_shader("frag file", fragFile, GL_FRAGMENT_SHADER);
 
-	GLuint program = glCreateProgram();
-	glAttachShader(program, vert_id);
-	glAttachShader(program, frag_id);
-	glLinkProgram(program);
+	GLuint program = link_program(vert_id, frag_id);
 
-	GLint result = GL_FALSE;
-	int log_len;
+	glDeleteShader(vert_id);
+	glDeleteShader(frag_id);
 
-	glGetProgramiv(program, GL_LINK_STATUS, &result);
-	glGetProgramiv(program, GL_INFO_LOG_LENGTH, &log_len);
-	char *prog_err = alloca(log_len + 1);
-	glGetProgramInfoLog(program, log_len, NULL, prog_err);
-	printf("Linking:\n%s\n", prog_err);
+	return program;
+}
+
+GLuint load_shaders_text(const char *vertText, const char *fragText) {
+	GLuint vert_id = compile_shader(vertText, "vert text", GL_VERTEX_SHADER);
+	GLuint frag_id = compile_shader(fragText, "frag text", GL_FRAGMENT_SHADER);
+
+	GLuint program = link_program(vert_id, frag_id);
 
 	glDeleteShader(vert_id);
 	glDeleteShader(frag_id);
@@ -51,9 +53,49 @@ void wait_quit(void) {
 	}
 }
 
+static GLuint compile_shader(const char *text, const char *desc, GLenum type) {
+	GLuint sh = glCreateShader(type);
+	glShaderSource(sh, 1, (const char**) &text , NULL);
+	glCompileShader(sh);
+
+	// Checking errors
+	GLint result = GL_FALSE;
+	int log_len;
+	glGetShaderiv(sh, GL_COMPILE_STATUS, &result);
+	glGetShaderiv(sh, GL_INFO_LOG_LENGTH, &log_len);
+
+	char *log = alloca(log_len + 1);
+	glGetShaderInfoLog(sh, log_len, NULL, log);
+
+	if (result != GL_TRUE) {
+		printf("%s:\n%s\n", desc, log);
+	}
+
+	return sh;
+}
+
+static GLuint link_program(GLuint vert, GLuint frag) {
+	GLuint program = glCreateProgram();
+	glAttachShader(program, vert);
+	glAttachShader(program, frag);
+	glLinkProgram(program);
+
+	GLint result = GL_FALSE;
+	int log_len;
+
+	glGetProgramiv(program, GL_LINK_STATUS, &result);
+	glGetProgramiv(program, GL_INFO_LOG_LENGTH, &log_len);
+	char *prog_err = alloca(log_len + 1);
+	glGetProgramInfoLog(program, log_len, NULL, prog_err);
+	if (result != GL_TRUE) {
+		printf("Linking:\n%s\n", prog_err);
+	}
+
+	return program;
+}
+
 static GLuint load_shader(
 		const char *desc, const char *file_name, GLenum type) {
-	GLuint sh = glCreateShader(type);
 
 	// Loading source
 	struct stat st;
@@ -67,21 +109,6 @@ static GLuint load_shader(
 	fclose(fd);
 	buf[st.st_size] = '\0';
 
-	// Compiling source
-	glShaderSource(sh, 1, (const char**) &buf , NULL);
-	glCompileShader(sh);
-
-	// Checking errors
-	GLint result = GL_FALSE;
-	int log_len;
-	glGetShaderiv(sh, GL_COMPILE_STATUS, &result);
-	glGetShaderiv(sh, GL_INFO_LOG_LENGTH, &log_len);
-
-	char *log = alloca(log_len + 1);
-	glGetShaderInfoLog(sh, log_len, NULL, log);
-
-	printf("%s:\n%s\n", desc, log);
-
-	return sh;
+	return compile_shader(buf, desc, type);
 }
 

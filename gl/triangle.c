@@ -20,7 +20,7 @@ main()
 		0.0f, 1.0f,
 	};
 
-	GLuint prog = load_shaders(
+	GLuint prog = load_shaders_files(
 			"triangle_vert.glsl",
 			"triangle_frag.glsl");
 	glUseProgram(prog);
