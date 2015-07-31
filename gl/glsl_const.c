@@ -19,12 +19,7 @@ static const char *glslFrag = GLSL_SOURCE(
 	}
 );
 
-int main(int argc, char **argv) {
-	SDL_Init(SDL_INIT_VIDEO);
-	SDL_SetVideoMode(640, 480, 0, SDL_OPENGL);
-
-	glewInit();
-
+void glstuff_main() {
 	GLuint program = load_shaders_text(glslVert, glslFrag);
 	glUseProgram(program);
 
@@ -41,18 +36,9 @@ int main(int argc, char **argv) {
 	glBufferData(GL_ARRAY_BUFFER, sizeof(data), data, GL_STATIC_DRAW);
 	gl_errors();
 
-	glClearColor(0.3, 0.4, 0.5, 1.0);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, NULL);
 	glDrawArrays(GL_TRIANGLES, 0, 3);
 	gl_errors();
-
-	SDL_GL_SwapBuffers();
-	wait_quit(); // Wait for key press
-
-	SDL_Quit();
-	return 0;
 }
 

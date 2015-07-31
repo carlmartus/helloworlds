@@ -7,15 +7,7 @@ typedef struct {
 	float size;
 } Vertice;
 
-int main() {
-	SDL_Init(SDL_INIT_VIDEO);
-	SDL_SetVideoMode(640, 480, 0, SDL_OPENGL);
-
-	glewInit();
-	glEnable(GL_PROGRAM_POINT_SIZE);
-	glEnable(GL_POINT_SPRITE);
-	gl_errors();
-
+void glstuff_main() {
 	GLuint prog = load_shaders_files(
 			"point_vert.glsl",
 			"point_frag.glsl");
@@ -34,21 +26,11 @@ int main() {
 			sizeof(data), data, GL_STATIC_DRAW);
 	gl_errors();
 
-	glClearColor(0.3, 0.4, 0.5, 1.0);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, NULL);
 	gl_errors();
 
 	glDrawArrays(GL_POINTS, 0, sizeof(data)/sizeof(data[0]));
 	gl_errors();
-
-	SDL_GL_SwapBuffers();
-	wait_quit();
-
-	SDL_Quit();
-
-	return 0;
 }
 

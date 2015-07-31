@@ -11,6 +11,28 @@ static GLuint link_program(GLuint vert, GLuint frag);
 static GLuint load_shader(const char *desc,
 		const char *file_name, GLenum type);
 
+int main() {
+	SDL_Init(SDL_INIT_VIDEO);
+	SDL_SetVideoMode(640, 480, 0, SDL_OPENGL);
+
+	glewInit();
+	glEnable(GL_PROGRAM_POINT_SIZE);
+	glEnable(GL_POINT_SPRITE);
+	gl_errors();
+
+	glClearColor(0.3, 0.4, 0.5, 1.0);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	extern void glstuff_main();
+	glstuff_main();
+
+	SDL_GL_SwapBuffers();
+	wait_quit();
+
+	SDL_Quit();
+	return 0;
+}
+
 GLuint load_shaders_files(const char *vertFile, const char *fragFile) {
 	GLuint vert_id = load_shader("vert file", vertFile, GL_VERTEX_SHADER);
 	GLuint frag_id = load_shader("frag file", fragFile, GL_FRAGMENT_SHADER);
