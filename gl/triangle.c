@@ -12,7 +12,7 @@ void glstuff_main() {
 
 	GLuint prog = load_shaders_files(
 			"triangle_vert.glsl",
-			"triangle_frag.glsl");
+			"triangle_frag.glsl", NULL);
 	glUseProgram(prog);
 
 	GLuint vb;

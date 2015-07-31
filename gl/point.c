@@ -10,7 +10,7 @@ typedef struct {
 void glstuff_main() {
 	GLuint prog = load_shaders_files(
 			"point_vert.glsl",
-			"point_frag.glsl");
+			"point_frag.glsl", NULL);
 	glUseProgram(prog);
 
 	static const Vertice data[] = {

@@ -7,7 +7,7 @@
 #include <SDL/SDL.h>
 
 static GLuint compile_shader(const char *text, const char *desc, GLenum type);
-static GLuint link_program(GLuint vert, GLuint frag);
+static GLuint link_program(GLuint vert, GLuint frag, const char **attributes);
 static GLuint load_shader(const char *desc,
 		const char *file_name, GLenum type);
 
@@ -33,11 +33,11 @@ int main() {
 	return 0;
 }
 
-GLuint load_shaders_files(const char *vertFile, const char *fragFile) {
+GLuint load_shaders_files(const char *vertFile, const char *fragFile, const char **attributes) {
 	GLuint vert_id = load_shader("vert file", vertFile, GL_VERTEX_SHADER);
 	GLuint frag_id = load_shader("frag file", fragFile, GL_FRAGMENT_SHADER);
 
-	GLuint program = link_program(vert_id, frag_id);
+	GLuint program = link_program(vert_id, frag_id, attributes);
 
 	glDeleteShader(vert_id);
 	glDeleteShader(frag_id);
@@ -45,11 +45,11 @@ GLuint load_shaders_files(const char *vertFile, const char *fragFile) {
 	return program;
 }
 
-GLuint load_shaders_text(const char *vertText, const char *fragText) {
+GLuint load_shaders_text(const char *vertText, const char *fragText, const char **attributes) {
 	GLuint vert_id = compile_shader(vertText, "vert text", GL_VERTEX_SHADER);
 	GLuint frag_id = compile_shader(fragText, "frag text", GL_FRAGMENT_SHADER);
 
-	GLuint program = link_program(vert_id, frag_id);
+	GLuint program = link_program(vert_id, frag_id, attributes);
 
 	glDeleteShader(vert_id);
 	glDeleteShader(frag_id);
@@ -96,10 +96,21 @@ static GLuint compile_shader(const char *text, const char *desc, GLenum type) {
 	return sh;
 }
 
-static GLuint link_program(GLuint vert, GLuint frag) {
+static GLuint link_program(GLuint vert, GLuint frag, const char **attributes) {
 	GLuint program = glCreateProgram();
 	glAttachShader(program, vert);
 	glAttachShader(program, frag);
+
+	if (attributes) {
+		unsigned i = 0;
+		while (*attributes != NULL) {
+			glBindAttribLocation(program, i, *attributes);
+			gl_errors();
+			i++;
+			attributes++;
+		}
+	}
+
 	glLinkProgram(program);
 
 	GLint result = GL_FALSE;
