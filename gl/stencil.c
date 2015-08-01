@@ -84,7 +84,15 @@ int glstuff_main(float time) {
 		glBufferData(GL_ARRAY_BUFFER, sizeof(vd1), &vd1, GL_STATIC_DRAW);
 	}
 
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+	glEnable(GL_STENCIL_TEST);
+
+	// Draw stencil
+    glStencilMask(0xff);
+	glStencilFunc(GL_ALWAYS, 1, 0xff);
+    glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
+	glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
+	glDepthMask(GL_FALSE);
 
 	glUseProgram(program0);
 	glBindBuffer(GL_ARRAY_BUFFER, vab0);
@@ -92,6 +100,12 @@ int glstuff_main(float time) {
 	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, NULL);
 	glDrawArrays(GL_TRIANGLES, 0, 3);
 	gl_errors();
+
+	// Draw stuff for stencil = 1
+    glStencilMask(0);
+	glStencilFunc(GL_EQUAL, 1, 0xff);
+	glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
+	glDepthMask(GL_TRUE);
 
 	glUseProgram(program1);
 	glBindBuffer(GL_ARRAY_BUFFER, vab1);
