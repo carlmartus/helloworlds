@@ -26,7 +26,7 @@ int glstuff_main(float time) {
 			sizeof(data), data, GL_STATIC_DRAW);
 	gl_errors();
 
-	glEnableVertexAttribArray(0);
+	set_attribute_count(1);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, NULL);
 	gl_errors();
 

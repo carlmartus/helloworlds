@@ -21,12 +21,11 @@ int glstuff_main(float time) {
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices),
 			vertices, GL_STATIC_DRAW);
 
-	glEnableVertexAttribArray(0);
+	set_attribute_count(1);
 	glBindBuffer(GL_ARRAY_BUFFER, vb);
 	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, NULL);
 
 	glDrawArrays(GL_TRIANGLES, 0, 3);
-	//glDisableVertexAttribArray(0);
 
 	return 0;
 }

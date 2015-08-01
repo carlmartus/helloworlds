@@ -2,8 +2,6 @@
 #include <math.h>
 #include "glstuff.h"
 
-#define GLSL_SOURCE(...) "#version 100\n" #__VA_ARGS__
-
 static const char *glslVert = GLSL_SOURCE(
 	attribute vec2 in_loc;
 	uniform float un_x, un_y;

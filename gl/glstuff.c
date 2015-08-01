@@ -11,7 +11,11 @@ static GLuint link_program(GLuint vert, GLuint frag, const char **attributes);
 static GLuint load_shader(const char *desc,
 		const char *file_name, GLenum type);
 
+static unsigned attribute_count;
+
 int main() {
+	attribute_count = 0;
+
 	SDL_Init(SDL_INIT_VIDEO);
 	SDL_SetVideoMode(640, 480, 0, SDL_OPENGL);
 
@@ -74,6 +78,16 @@ GLuint load_shaders_text(const char *vertText, const char *fragText, const char 
 	glDeleteShader(frag_id);
 
 	return program;
+}
+
+void set_attribute_count(unsigned count) {
+	while (attribute_count > count) {
+		glDisableVertexAttribArray(--attribute_count);
+	}
+
+	while (attribute_count < count) {
+		glEnableVertexAttribArray(attribute_count++);
+	}
 }
 
 void gl_errors(void) {
