@@ -1,0 +1,2 @@
+all:
+	ghcjs code.hs
