@@ -32,16 +32,22 @@ function main() {
 
 	let startTime = Date.now();
 
-	// Background
-	let bgBase = makeBaseTexture('bg.jpg', false);
-	let bgTex = new PIXI.Texture(bgBase);
-	let bgTiling = new PIXI.extras.TilingSprite(bgTex,
+	// Background 1/2
+	let bgBase1 = makeBaseTexture('bg.jpg', false);
+	let bgTex1 = new PIXI.Texture(bgBase1);
+	let bgTiling1 = new PIXI.extras.TilingSprite(bgTex1,
 			renderer.width, renderer.height);
-	//bgTiling._tileScaleOffset.x = 0;
+
+	// Background 2/2
+	let bgBase2 = makeBaseTexture('moln.png', false);
+	let bgTex2 = new PIXI.Texture(bgBase2);
+	let bgTiling2 = new PIXI.extras.TilingSprite(bgTex2,
+			renderer.width, renderer.height);
 
 	// Scene
 	let stage = new PIXI.Container();
-	stage.addChild(bgTiling);
+	stage.addChild(bgTiling1);
+	stage.addChild(bgTiling2);
 	stage.addChild(sprite);
 
 
@@ -50,10 +56,12 @@ function main() {
 		let passed = (now - startTime) * 0.001;
 
 		sprite.position.x = passed*10.5;
-		bgTiling.tilePosition.x = Math.floor(-passed*40.0);
-		bgTiling.tilePosition.y = -50;
-		bgTiling.worldTransform.tx = -0.5;
-        bgTiling.worldTransform.ty = -0.5;
+		bgTiling1.tilePosition.x = Math.floor(-passed*40.0);
+		bgTiling1.tilePosition.y = -50;
+		bgTiling1.worldTransform.tx = -0.5;
+        bgTiling1.worldTransform.ty = -0.5;
+
+		bgTiling2.tilePosition.x = Math.floor(-passed*10.0);
 
 		renderer.render(stage);
 		requestAnimationFrame(animate);
