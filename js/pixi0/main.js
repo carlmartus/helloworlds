@@ -10,6 +10,23 @@ function makeBaseTexture(url, linear) {
 	return base;
 };
 
+function createMatrix(baseTexture) {
+	let texture = new PIXI.Texture(baseTexture,
+			new PIXI.Rectangle(100, 100, 40, 30));
+	let container = new PIXI.Container();
+
+	for (let y=0; y<4; y++) {
+		for (let x=0; x<4; x++) {
+			let sp = new PIXI.Sprite(texture);
+			sp.position.x = x*sp.width;
+			sp.position.y = y*sp.height;
+			container.addChild(sp);
+		}
+	}
+
+	return container;
+};
+
 function main() {
 	let renderer = PIXI.autoDetectRenderer(400, 300,
 			{ backgroundColor: 0xff22ff44 });
@@ -30,6 +47,12 @@ function main() {
 		sprite.scale.x += 0.1;
 	});
 
+	sprite.on('mouseover', function() {
+	});
+
+	sprite.on('mouseout', function() {
+	});
+
 	let startTime = Date.now();
 
 	// Background 1/2
@@ -44,11 +67,15 @@ function main() {
 	let bgTiling2 = new PIXI.extras.TilingSprite(bgTex2,
 			renderer.width, renderer.height);
 
+	// Matrix
+	let matrix = createMatrix(base);
+
 	// Scene
 	let stage = new PIXI.Container();
 	stage.addChild(bgTiling1);
 	stage.addChild(bgTiling2);
 	stage.addChild(sprite);
+	stage.addChild(matrix);
 
 
 	function animate() {
