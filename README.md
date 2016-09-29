@@ -12,7 +12,8 @@ A few hello world programs and sample codes.
  * **iup** GUI toolkit
  * **js/gl?** Javascript WebGL
  * **kivy** Python fancy GUI toolkit
+ * **love** Löve2d Lua game engine
  * **ncurses** Terminal GUI toolkit
- * **vargs** POSIX vargs
  * **string.h** Tokenization
+ * **vargs** POSIX vargs
 
