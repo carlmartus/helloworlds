@@ -1,10 +1,9 @@
 local x, font;
 
 function love.load()
-	love.graphics.setBackgroundColor(0x7f, 0x7f, 0x7f)
-
 	x = 50;
-	--font = love.graphics.newFont("boogie.ttf", 60)
+
+	love.graphics.setBackgroundColor(0x7f, 0x7f, 0x7f)
 
 	font = love.graphics.newImageFont("font.png", "ehlo")
 	love.graphics.setFont(font)
@@ -20,8 +19,8 @@ function love.keypressed(key)
 	end
 end
 
-function love.resize()
-	print "RESIZE"
+function love.resize(w, h)
+	print("RESIZE " .. w .. "x" .. h)
 end
 
 function love.draw()
